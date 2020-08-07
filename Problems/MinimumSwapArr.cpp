@@ -12,7 +12,7 @@ bool checkSorted(vector<int> arr){
     }
     return true;
 }
-void FindMinSwap(vector<int> arr) {
+int FindMinSwap(vector<int> arr) {
     vector<bool> visited;
     for(int i=0;i<arr.size();i++)
         visited.push_back(false);
@@ -21,7 +21,7 @@ void FindMinSwap(vector<int> arr) {
     
     int rechCount = 0;
     if(checkSorted(arr)){
-        return;
+        return 0;
     }
     while(rechCount < visited.size()){
         if(arr[idx] == idx+1){
@@ -49,6 +49,7 @@ void FindMinSwap(vector<int> arr) {
         cout << arr[i] << " ";
     }
     
+    return count;
     
     
 }
@@ -58,7 +59,7 @@ int main(int argc, const char * argv[]) {
     int arr[] = {1,3,5,2,4,6,7};
     vector<int> arrV(arr, arr+ sizeof(arr)/sizeof(int));
     
-    FindMinSwap(arrV);
+    int k = FindMinSwap(arrV);
     
     
     
