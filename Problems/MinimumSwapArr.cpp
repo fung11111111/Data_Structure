@@ -3,7 +3,15 @@
 
 using namespace std;
 
-
+bool checkSorted(vector<int> arr){
+    for(int i=0; i<arr.size();i++){
+        if(arr[i] == i+1){
+            continue;
+        }
+        return false;
+    }
+    return true;
+}
 void FindMinSwap(vector<int> arr) {
     vector<bool> visited;
     for(int i=0;i<arr.size();i++)
@@ -12,6 +20,9 @@ void FindMinSwap(vector<int> arr) {
     int idx =0;
     
     int rechCount = 0;
+    if(checkSorted(arr)){
+        return;
+    }
     while(rechCount < visited.size()){
         if(arr[idx] == idx+1){
             visited[idx] = true;
