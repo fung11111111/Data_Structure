@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include <vector>
-#include <stack>
 using namespace std;
 
 
@@ -17,7 +16,6 @@ int main(int argc, const char * argv[]) {
     int N = 0;
     int wall =0;
     
-    stack<int> s;
     vector<pair<int, int>> v;
     cin >> T;
     
@@ -25,26 +23,26 @@ int main(int argc, const char * argv[]) {
         int up =0;
         int down = 0;
         cin >> N;
+        int top = -1;
         for(int j=0;j<N;j++){
             cin >> wall;
-            if(!s.empty()){
-                if(wall > s.top()){
+            
+            if(top > 0){
+                if(wall > top){
                     up++;
                 }
-                if(wall < s.top()){
+                if(wall < top){
                     down++;
                 }
             }
-            s.push(wall);
+            top = wall;
             
         }
         v.push_back({up,down});
-        while (!s.empty()) {
-            s.pop();
-        }
+     
     }
     for(int i=0;i<v.size();i++){
-        cout << "case " << i << " :"<<v[i].first << " " << v[i].second << endl;
+        cout << "case " << i+1 << " :"<<v[i].first << " " << v[i].second << endl;
     }
     
     
