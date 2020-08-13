@@ -9,96 +9,96 @@
 #include <iostream>
 #include <vector>
 #include <list>
-#include <queue>
+#include <stack>
 using namespace std;
 
 class Graph{
-private:
-    int num_vertex;
-    vector<list<int>> AdjList;
-    
-    void DFSUtil(int Start, bool visited[]);
+    int numOfV; // number of vertex
+    vector<list<int>> adj;
 public:
-    Graph():num_vertex(0){};           // default constructor
-    Graph(int N):num_vertex(N){        // constructor with input: number of vertex
-        // initialize Adjacency List
-        AdjList.resize(num_vertex);
-    };
-    void AddEdgeList(int from, int to);
-    void BFS(int Start);
-    void DFS(int Start);
+    Graph(int numOfV);
+    void addEdge(int f, int t); // from to
+    void BFS(int s);// s is the starting node
+    void DFS(int s, vector<bool> &visited);
+    void DFSChecker(int s);
+    
 };
-
-void Graph::AddEdgeList(int from, int to){
-    AdjList[from].push_back(to);
-    
+Graph ::Graph(int numOfV){
+    this->numOfV = numOfV;
+    adj.resize(numOfV);
 }
-void Graph::BFS(int Start){
-    // Mark all the vertices as not visited
-    bool *visited = new bool[num_vertex];
-    for(int i = 0; i < num_vertex; i++)
-        visited[i] = false;
-    
-    // Create a queue for BFS
-    list<int> queue;
-    
-    // Mark the current node as visited and enqueue it
-    visited[Start] = true;
-    queue.push_back(Start);
-    
-    // 'i' will be used to get all adjacent
-    // vertices of a vertex
-    list<int>::iterator i;
-    
-    while(!queue.empty())
-    {
-        // Dequeue a vertex from queue and print it
-        Start = queue.front();
-        cout << Start << " ";
-        queue.pop_front();
-        
-        // Get all adjacent vertices of the dequeued
-        // vertex s. If a adjacent has not been visited,
-        // then mark it visited and enqueue it
-        for (i = AdjList[Start].begin(); i != AdjList[Start].end(); ++i)
-        {
-            if (!visited[*i])
-            {
-                visited[*i] = true;
-                queue.push_back(*i);
-            }
+void Graph::addEdge(int v, int w){
+    adj[v].push_back(w);
+}
+
+void Graph::DFSChecker(int s){
+    vector<bool> visited(numOfV,false);
+    int idx = s;
+    for(int i=0; i<numOfV;i++){
+        if(!visited[idx]){
+            DFS(idx, visited);
         }
-        
+        idx = i;
     }
 }
-void Graph::DFSUtil(int Start, bool *visited){
-    visited[Start] = true;
-    cout << Start << " ";
+void Graph::DFS(int s, vector<bool> &visited){
+   
+    list<int>::iterator itr;
+    stack<int> stk;
     
-    list<int>::iterator i;
-    for (i = AdjList[Start].begin(); i != AdjList[Start].end(); ++i)
-        if (!visited[*i])
-            DFSUtil(*i, visited);
+    stk.push(s);
+    while(!stk.empty()){
+        int top = stk.top();
+        stk.pop();
+        if(!visited[top]){
+            visited[top] = true;
+            cout << top << " ";
+        }
+        for(itr=adj[top].begin();itr!=adj[top].end();++itr){
+            if(!visited[*itr]){
+                stk.push(*itr);
+            }
+        }
+    }
+    
 }
-void Graph::DFS(int Start){
-    bool *visited = new bool[Start];
-       for (int i = 0; i < Start; i++)
-           visited[i] = false;
-     
-       DFSUtil(Start, visited);
+void Graph::BFS(int s){
+    vector<bool> visited(numOfV,false);
+    list<int> q;
+    list<int>::iterator itr;
+    q.push_back(s);
+    
+    while (!q.empty()) {
+        int start = q.front();
+        visited[start] = true;
+        q.pop_front();
+        cout << start << " ";
+        for(itr=adj[start].begin();itr!=adj[start].end();++itr){
+            if(!visited[*itr]){
+                visited[*itr] = true;
+                q.push_back(*itr);
+            }
+        }
+    
+    }
+    
+    
 }
+
 int main(int argc, const char * argv[]) {
-    Graph g(4);
-    g.AddEdgeList(0, 1);
-    g.AddEdgeList(0, 2);
-    g.AddEdgeList(1, 2);
-    g.AddEdgeList(2, 0);
-    g.AddEdgeList(2, 3);
-    g.AddEdgeList(3, 3);
     
-    g.DFS(3);
     
+    
+    Graph g2(8);
+    g2.addEdge(0, 1);g2.addEdge(0, 2);
+    g2.addEdge(1, 3);
+    g2.addEdge(2, 1);g2.addEdge(2, 5);
+    g2.addEdge(3, 4);g2.addEdge(3, 5);
+    g2.addEdge(5, 1);
+    g2.addEdge(6, 4);g2.addEdge(6, 7);
+    g2.addEdge(7, 6);
+    
+    g2.DFSChecker(0);
     
     return 0;
 }
-
